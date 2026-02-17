@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/Nailbitter/employee_payroll_system_bridgelab/issues"
   },
-  "homepage": "https://github.com/Nailbitter/employee_payroll_system_bridgelab#readme"
+  "homepage": "https://github.com/Nailbitter/employee_payroll_system_bridgelab#readme",
+  "dependencies": {
+    "ejs": "^4.0.1",
+    "express": "^5.2.1"
+  }
 }
