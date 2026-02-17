@@ -6,8 +6,14 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
-    const employees = await fileHandler.read();
-    res.render('index', { employees });
+    try {
+        const employees = await fileHandler.read();
+        console.log(employees); 
+        res.render('index', { employees });
+    } catch (error) {
+        console.error(error);
+        res.send("Something went wrong");
+    }
 });
 
 app.listen(3000, () => {
