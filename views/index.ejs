@@ -1,36 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/style.css">
-    <title>Employee Dashboard</title>
+  <title>Employee Payroll Dashboard</title>
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<h1>Employee Payroll System</h1>
+<div class="container">
+  <h1><i class="fa-solid fa-chart-line"></i> Employee Payroll Dashboard</h1>
 
-<table>
-    <tr>
+  <!-- Summary Section -->
+  <div class="summary">
+
+    <% 
+      let totalPayroll = 0;
+      employees.forEach(emp => totalPayroll += emp.salary);
+      let employeeCount = employees.length;
+      let averageSalary = employeeCount ? totalPayroll / employeeCount : 0;
+    %>
+
+    <div class="stat-card">
+      <h3><i class="fa-solid fa-users"></i> Total Employees</h3>
+      <p><%= employeeCount %></p>
+    </div>
+
+    <div class="stat-card">
+      <h3><i class="fa-solid fa-wallet"></i> Total Payroll</h3>
+      <p>₹ <%= totalPayroll.toFixed(2) %></p>
+    </div>
+
+    <div class="stat-card">
+      <h3><i class="fa-solid fa-calculator"></i> Average Salary</h3>
+      <p>₹ <%= averageSalary.toFixed(2) %></p>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="search-container">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="searchInput"
+        placeholder="Search Employee..."
+        onkeyup="searchEmployee()">
+    </div>
+
+    <br>
+
+    <a href="/add" class="btn btn-primary">
+      <i class="fa-solid fa-user-plus"></i> Add Employee
+    </a>
+
+    <table id="employeeTable">
+      <tr>
         <th>Name</th>
         <th>Department</th>
-        <th>Basic Salary</th>
+        <th>Salary</th>
         <th>Tax (12%)</th>
         <th>Net Salary</th>
-    </tr>
+        <th>Actions</th>
+      </tr>
 
-    <% employees.forEach(emp => { %>
+      <% employees.forEach(emp => { %>
         <% let tax = emp.salary * 0.12; %>
         <% let net = emp.salary - tax; %>
-
         <tr>
-            <td><%= emp.name %></td>
-            <td><%= emp.department %></td>
-            <td><%= emp.salary %></td>
-            <td><%= tax %></td>
-            <td><%= net %></td>
+          <td><i class="fa-solid fa-user"></i> <%= emp.name %></td>
+          <td><i class="fa-solid fa-building"></i> <%= emp.department %></td>
+          <td>₹ <%= emp.salary %></td>
+          <td>₹ <%= tax.toFixed(2) %></td>
+          <td>₹ <%= net.toFixed(2) %></td>
+          <td>
+            <a href="/edit/<%= emp.id %>" class="btn btn-warning">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="/delete/<%= emp.id %>" class="btn btn-danger">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+          </td>
         </tr>
-    <% }) %>
+      <% }) %>
 
-</table>
+    </table>
+
+  </div>
+</div>
+
+<script>
+function searchEmployee() {
+  let input = document.getElementById("searchInput").value.toLowerCase();
+  let rows = document.querySelectorAll("#employeeTable tr");
+
+  rows.forEach((row, index) => {
+    if (index === 0) return;
+    let text = row.innerText.toLowerCase();
+    row.style.display = text.includes(input) ? "" : "none";
+  });
+}
+</script>
 
 </body>
 </html>
